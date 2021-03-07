@@ -1,0 +1,46 @@
+﻿<!--model IEnumerable<BookStore.Models.User>-->
+@{
+    Layout = "~/Views/Shared/_Layout_2.cshtml";
+}
+
+<style>
+    li {
+        list-style-type: none; /* Убираем маркеры */
+    }
+
+    ul {
+        margin-top: 10px;
+    }
+</style>
+<h3>Список пользователей</h3>
+@Html.DropDownList("UserID", ViewBag.UserID as SelectList, new { onchange = "PartialIndexButton(this)" })
+<!--div>
+    {
+        foreach (BookStore.Models.User b in Model)
+        {
+<ul>
+    <li><div style="margin-right: 2px; margin-left: 10px">b.Email b.Role</div></li>
+    <li><input type="button" onclick="PartialIndexButton('((string)b.Email)')" value="поиск" /></li>
+
+</ul>
+        }
+    }
+</div-->
+
+<div id="UserCard">
+    @Html.Action("UserCard", "Home")
+</div>
+
+<script type="text/javascript">
+    function PartialIndexButton(th) {
+        //var bn = $("#bn").val();
+        var UserEmail = $(th).val();
+        var jqxhr = $.get('@Url.Action("UserCard", "Home")', { 'UserEmail': UserEmail });
+        jqxhr.done(function (data) {
+            $('#UserCard').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#UserCard').html("ОШИБКА!");
+        });
+    }
+</script>

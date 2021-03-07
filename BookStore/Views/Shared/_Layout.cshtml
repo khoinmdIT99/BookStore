@@ -1,0 +1,56 @@
+﻿@using BookStore.Models
+@using System.Text;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Библиотека", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Выйти", "Logoff", "Account")</li>
+                    <li>@Html.ActionLink("Войти", "Login", "Account")</li>
+                    <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account")</li>
+                    <li>@Html.ActionLink("Контакты", "Contact", "Home")</li>
+                    @{/*
+                        StringBuilder SQL = new StringBuilder();
+                        SQL.Append("Select Role from Users where Email = '" + User.Identity.Name + "'");
+                        string strSQL = SQL.ToString();
+                        List<int>
+                                        list = BookStoreProvider.db.Database.SqlQuery<int>
+                                            (strSQL).ToList();
+                        if (list.Count>0&&list[0] == 2)
+                        { 
+                        <li>@Html.ActionLink("Библиотекарь", "Index", "Librarian")</li>
+                        }*/
+                    }
+                </ul>
+                <p align="right" style="margin-top:15px">@ViewBag.result</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+   
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

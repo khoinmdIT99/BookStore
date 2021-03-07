@@ -1,0 +1,18 @@
+﻿@using BookStore.Models
+@using System.Text;
+@{
+    StringBuilder SQL = new StringBuilder();
+    SQL.Append("Select Role from Users where Email = '" + User.Identity.Name + "'");
+    string strSQL = SQL.ToString();
+    List<int>
+                    list = BookStoreProvider.db.Database.SqlQuery<int>
+                        (strSQL).ToList();
+    if (list.Count > 0 && list[0] == 2)
+    {
+        Layout = "~/Views/Shared/_Layout_2.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}

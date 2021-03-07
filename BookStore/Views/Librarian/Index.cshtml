@@ -1,0 +1,38 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout_2.cshtml";
+}
+
+<h3>Список пользователей</h3>
+@Html.DropDownList("UserID", ViewBag.UserID as SelectList, new { onchange = "PartialIndexButton(this)" })
+ 
+<div id="PartialIndex" style="overflow:scroll; width:100%; height:400px">
+    @Html.Action("BookMovements", "Librarian")
+</div>
+
+<script type="text/javascript">
+    function PartialIndexButton(th) {
+        //var bn = $("#bn").val();
+        var UserEmail = $(th).val();
+        var jqxhr = $.get('@Url.Action("BookMovements", "Librarian")', { 'UserEmail': UserEmail });
+        jqxhr.done(function (data) {
+            $('#PartialIndex').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#PartialIndex').html("ОШИБКА!");
+        });
+    }
+
+    function BookMovements(Id,StatusId) {
+
+        var jqxhr = $.post('@Url.Action("BookMovements")', { 'Id': Id, 'StatusId': StatusId});
+        jqxhr.done(function (data) {
+            $('#PartialIndex').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#PartialIndex').html("ОШИБКА!");
+        });
+
+    }
+
+</script>

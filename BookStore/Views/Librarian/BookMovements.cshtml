@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BookStore.Models.BookMovement>
+
+
+
+<table class="table">
+    <thead style="position: absolute; background-color:white">
+        <tr>
+
+            <th style="width:16vw">
+                Количество книг
+
+            </th>
+            <th style="width:16vw">
+                Дата заказа
+
+            </th>
+            <th style="width:16vw">
+                Название
+
+            </th>
+            <th style="width:18.7vw">
+                Email пользователя
+
+            </th>
+            <th style="width:16vw">
+                Статус книги
+
+            </th>
+            <th style="width:16vw"></th>
+        </tr>
+    </thead>
+    <tr><th style="background-color:white">&#160</th></tr>
+    <tbody style="margin-top:500px">
+        @foreach (var item in Model)
+        {
+
+            <tr>
+
+                <td style="width:16vw">
+                    @Html.DisplayFor(modelItem => item.BookCount)
+                </td>
+                <td style="width:16vw">
+                    @Html.DisplayFor(modelItem => item.DateMovement)
+                </td>
+                <td style="width:16vw">
+                    @Html.DisplayFor(modelItem => item.Book.Name)
+                </td>
+                <td style="width:16vw">
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td style="width:16vw">
+                    @Html.DisplayFor(modelItem => item.Status.StatusName)
+                </td>
+
+                <td style="width:16vw">
+                    <p>
+                        @{
+                            if (item.Status != null && item.Status.Id == 1)
+                            {
+
+                                <input type="button" id="@item.Id" onclick="BookMovements(@item.Id,2);" value="Выдать">
+
+
+                            }
+                            else if (item.Status != null && item.Status.Id == 3)
+                            {
+
+                                <input type="button" id="@item.Id" onclick="BookMovements(@item.Id,5);" value="вернуть книгу">
+
+
+                            }
+
+                        }
+                    </p>
+                </td>
+
+
+            </tr>
+
+        }
+    </tbody>
+
+</table>

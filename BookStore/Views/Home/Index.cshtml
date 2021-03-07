@@ -1,0 +1,145 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ReceiveBookDisplay {
+        display: block;
+        position: absolute;
+        top: 10%;
+        left: 20%;
+        width: 60%;
+        background-color: aqua;
+        height: 40%;
+    }
+    .ReceiveBookNotDisplay {
+        display: none;
+        position: absolute;
+        top: 10%;
+        left: 20%;
+        width: 60%;
+        background-color: aqua;
+        height: 40%;
+    } 
+</style>
+<div style="margin-top: 20px; margin-left: 10px">
+    <input type="text" id="bn" />
+    <input type="button" onclick="PartialIndexButton()" value="поиск" />
+    <div id="PartialIndex">
+        @Html.Action("PartialIndex", "Home")
+    </div>
+    <div id="Basket">
+        @Html.Action("partialBuy", "Home")
+   
+    </div>
+        <div id="DivReceiveBookId" class="ReceiveBookNotDisplay">
+
+        </div>
+    <div id="result"></div>
+</div>
+<script type="text/javascript">
+    
+    function Check(th) {
+        var ch = $("#Check_" + th);
+        var checked;
+        if ((ch).is(':checked')) {
+            checked = 1;
+            //alert('Включен');
+        } else {
+            checked = 0;
+            //alert('Выключен');
+        }
+        var countbook = $("#Count_" + th).val();
+        if (checked == 1) {
+            if (confirm("Вам уверены, что хотите взять эту книгу?")) {
+                var jqxhr = $.post('@Url.Action("partialBuy", "Home")', { 'id': th, 'ch': checked, 'countb': countbook });
+                jqxhr.done(function (data) {
+                    $('#Basket').html(data);
+                });
+                jqxhr.fail(function (data) {
+                    $('#Basket').html("ОШИБКА!");
+                });
+            }
+            else {
+                $(ch).prop("checked", false);
+
+                //ch.checked=false;
+            }
+        }
+    }
+    function PartialIndexButton() {
+        var bn = $("#bn").val();
+      
+          var jqxhr = $.post('@Url.Action("PartialIndex", "Home")', { 'bn': bn});
+        jqxhr.done(function (data) {
+            $('#PartialIndex').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#PartialIndex').html("ОШИБКА!");
+        });
+
+    }
+    function RetBook(BookId) {
+        var countbook = $("#CountBook_" + BookId).val();
+        var jqxhr = $.post('@Url.Action("PartialRetBook", "Home")', { 'BookId': BookId, 'countb': countbook});
+        jqxhr.done(function (data) {
+            $('#Basket').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#Basket').html("ОШИБКА!");
+        });
+
+    }
+    function ReceiveBook(BookMovementId,statusId) {
+        var jqxhr = $.post('@Url.Action("PartialReceiveBook", "Home")', { 'BookMovementId': BookMovementId, 'statusId': 3});
+        jqxhr.done(function (data) {
+            $('#DivError').html(data);
+
+             var jqxhr2 = $.get('@Url.Action("partialBuy", "Home")');
+                    jqxhr2.done(function (data2) {
+                        $('#Basket').html(data2);
+                    });
+                    jqxhr2.fail(function (data2) {
+                        $('#Basket').html("ОШИБКА!");
+                    });
+        });
+        jqxhr.fail(function (data) {
+            $('#DivError').html("ОШИБКА!");
+        });
+
+    }
+      
+    function BookMovements(Id,StatusId) {
+       
+        var jqxhr = $.post('@Url.Action("BookMovements", "Librarian")', { 'Id': Id, 'StatusId': StatusId});
+        jqxhr.done(function (data) {
+            $('#PartialIndex').html(data);
+        });
+        jqxhr.fail(function (data) {
+            $('#PartialIndex').html("ОШИБКА!");
+        });
+
+    }
+    function divReceiveBookDisplay(BookId) {
+        var v = $("#DivReceiveBookId");
+        $("#DivReceiveBookId").removeClass("ReceiveBookNotDisplay");
+        $("#DivReceiveBookId").addClass("ReceiveBookDisplay");
+
+        var jqxhr = $.get('@Url.Action("SelectRetBooks", "Home")', { 'BookId': BookId, 'StatusId': 2 });
+        jqxhr.done(function (data) {
+            $('#DivReceiveBookId').html(data);
+            var buttonclose = $('<input type="button" onclick="CloseReceiveBookDisplay()" value="скрыть" />').appendTo($("#DivReceiveBookId"))
+        });
+        jqxhr.fail(function (data) {
+            $('#DivReceiveBookId').html("ОШИБКА!");
+        });
+
+    }
+
+       function CloseReceiveBookDisplay() {
+           var v = $("#DivReceiveBookId");
+           $("#DivReceiveBookId").removeClass("ReceiveBookDisplay");
+           $("#DivReceiveBookId").addClass("ReceiveBookNotDisplay");
+
+    }
+</script>

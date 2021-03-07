@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BookStore.Models.UserBook>
+<style>
+    th {
+        text-align: center;
+      
+        background-color: aliceblue;
+    }
+    td {
+        text-align: justify;
+    }
+</style>
+<div>
+    <h2>@ViewData["Head"]</h2>
+    <h3>Ваши книги</h3>
+
+    <table class="table">
+        <tr>
+            <th><p>Название книги</p></th>
+            <th><p>Автор</p></th>
+            <th><p>Количество</p></th>
+            <th><p>Статус</p></th>
+        </tr>
+        @{
+            foreach (BookStore.Models.UserBook b in Model)
+            {
+                <tr>
+                    <td><p>@b.BookName</p></td>
+                    <td><p>@b.Author</p></td>
+                    <td><p>@b.Count</p></td>
+                    <td><p>@b.StatusName</p></td>
+                    <td><p><input type="number" id="CountBook_@b.BookId" min="1" max="5" value="1"></p></td>
+                    <td>
+                        <p>
+
+                                @if (b.StatusId == 3)
+                                {
+
+                                    <input type="button" id="b.BookId" onclick="divReceiveBookDisplay()" value="Вернуть">
+
+
+                                }
+                                else if (b.StatusId == 2)
+                                {
+                                    <input type="button" id="b.BookId" onclick="divReceiveBookDisplay(@b.BookId)" value="Получил">
+
+
+                                }
+
+
+                        </p>
+                    </td>
+
+
+                </tr>
+            }
+        }
+    </table>
+
+    <!-- RetBook(b.BookId,4);ReceiveBook(b.BookId,5);-->
+</div>
+
+
+
+

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BookStore.Models.Book>
+<div>
+    <h2>@ViewData["Head"]</h2>
+    <h3>Бибилиотека</h3>
+    @{
+        <table class="table">
+            <tr class="header">
+                <th><p>Название книги</p></th>
+                <th><p>Автор</p></th>
+                <th><p>Количество</p></th>
+                <th></th>
+            </tr>
+
+            @foreach (BookStore.Models.Book b in Model)
+            {
+                <tr>
+                    <td><p>@b.Name</p></td>
+                    <td><p>@b.Author</p></td>
+                    <td><p><input type="number" id="Count_@b.Id" min="1" max="5" value="1"></p></td>
+                    <td><p><input type="checkbox" id="Check_@b.Id" onclick="Check(@b.Id);">Выбрать</p></td>
+
+                </tr>
+            }
+        </table>
+        }
+</div>
+
+
+
